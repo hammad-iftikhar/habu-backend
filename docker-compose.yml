@@ -1,0 +1,24 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: habu-postgres
+    environment:
+      POSTGRES_USER: habu_user
+      POSTGRES_PASSWORD: habu_password
+      POSTGRES_DB: habu_db
+    ports:
+      - "5436:5432"
+    volumes:
+      - habu_postgres_data:/var/lib/postgresql/data
+    mem_limit: 512m
+    mem_reservation: 256m
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U habu_user -d habu_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  habu_postgres_data:

@@ -4,7 +4,6 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import SessionRepository from "../repositories/session.js";
 
-
 class UserController {
   async signup(req: Request, res: Response) {
     try {
@@ -76,7 +75,7 @@ class UserController {
       const token = jwt.sign(
         { userId: user.id, email: user.email },
         process.env.APP_KEY!,
-        { expiresIn: "2d" }
+        { expiresIn: "2d" },
       );
 
       const expiresAt = new Date();
@@ -91,6 +90,22 @@ class UserController {
       return res.status(200).json({
         message: "Login successful with token",
         token,
+      });
+    } catch (error) {
+      console.log(error);
+      return res.status(500).json({ message: "Internal Server Error" });
+    }
+  }
+
+  async me(req: Request, res: Response) {
+    try {
+      const user = req.user!;
+
+      return res.status(200).json({
+        data: {
+          name: user.name,
+          email: user.email,
+        },
       });
     } catch (error) {
       console.log(error);

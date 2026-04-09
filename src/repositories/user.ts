@@ -22,6 +22,19 @@ class UserRepository {
 
     return false;
   }
+
+  async findById(id: number) {
+    const users = await this.db
+      .select()
+      .from(usersTable)
+      .where(eq(usersTable.id, id));
+
+    if (users.length > 0) {
+      return users[0];
+    }
+
+    return null;
+  }
 }
 
 export default new UserRepository();

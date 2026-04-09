@@ -8,6 +8,13 @@
       "when": 1775759251063,
       "tag": "0000_goofy_shocker",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1775764851083,
+      "tag": "0001_nosy_pretty_boy",
+      "breakpoints": true
     }
   ]
 }

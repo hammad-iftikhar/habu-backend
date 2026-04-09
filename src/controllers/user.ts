@@ -1,6 +1,9 @@
 import type { Request, Response } from "express";
 import UserRepository from "../repositories/user.js";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+import SessionRepository from "../repositories/session.js";
+
 
 class UserController {
   async signup(req: Request, res: Response) {
@@ -70,8 +73,24 @@ class UserController {
         });
       }
 
+      const token = jwt.sign(
+        { userId: user.id, email: user.email },
+        process.env.APP_KEY!,
+        { expiresIn: "2d" }
+      );
+
+      const expiresAt = new Date();
+      expiresAt.setDate(expiresAt.getDate() + 2);
+
+      await SessionRepository.create({
+        userId: user.id,
+        token: token,
+        expiresAt: expiresAt,
+      });
+
       return res.status(200).json({
-        message: "Login successfull",
+        message: "Login successful with token",
+        token,
       });
     } catch (error) {
       console.log(error);

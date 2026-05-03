@@ -22,6 +22,10 @@ class SessionRepository {
 
     return null;
   }
+
+  async deleteByToken(token: string) {
+    return this.db.delete(sessionsTable).where(eq(sessionsTable.token, token));
+  }
 }
 
 export default new SessionRepository();

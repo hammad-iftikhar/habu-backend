@@ -18,7 +18,7 @@ class UserController {
       const userExists = await UserRepository.findByEmail(email);
 
       if (userExists) {
-        return res.status(400).json({
+        return res.status(409).json({
           message: "User already exists. Please login",
         });
       }
@@ -32,7 +32,7 @@ class UserController {
       });
 
       if (!user) {
-        return res.status(400).json({
+        return res.status(500).json({
           message: "Failed to signup",
         });
       }
@@ -59,7 +59,7 @@ class UserController {
       const user = await UserRepository.findByEmail(email);
 
       if (!user) {
-        return res.status(400).json({
+        return res.status(401).json({
           message: "Invalid email or password",
         });
       }
@@ -67,7 +67,7 @@ class UserController {
       const isPasswordValid = await bcrypt.compare(password, user.password);
 
       if (!isPasswordValid) {
-        return res.status(400).json({
+        return res.status(401).json({
           message: "Invalid email or password",
         });
       }
